@@ -1,5 +1,5 @@
-const {Schema , model } = require("mongoose")
-const commentSchema = new Schema({
+const {Schema , mongoose } = require("mongoose")
+const commentSchema = new mongoose.Schema({
     content:{
         type:String,
         required: true,
@@ -14,5 +14,6 @@ const commentSchema = new Schema({
     },
 },{timestamps:true})
 
-const Comment = model("comment",commentSchema)
-module.exports = Comment;
+// const Comment = model("comment",commentSchema)
+// module.exports = Comment;
+module.exports = mongoose.model("comment", commentSchema);

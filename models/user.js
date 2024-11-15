@@ -1,8 +1,8 @@
-const { Schema , model} = require("mongoose");
+const { Schema , mongoose} = require("mongoose");
 const {createHmac, randomBytes} = require("crypto")
 const {createTokenForUser} = require('../utils/authentication')
 
-const userSchema = new Schema(
+const userSchema = new mongoose.Schema(
   {
     fullName: {
       type: String,
@@ -68,5 +68,6 @@ userSchema.static("matchPasswordAndCreateToken",async function (email, password)
     return token;
 
 })
-const User = model("user", userSchema);
-module.exports = User;
+// const User = model("user", userSchema);
+// module.exports = User;
+module.exports = mongoose.model("user", userSchema);

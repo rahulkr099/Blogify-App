@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const { checkForAuthenticationCookie } = require("./middleware/authentication");
 const blogRoute = require("./routes/blog");
 const Blog = require('./models/blog')
+const auth = require('./utils/authentication')
 
 const app = express();
 const PORT = process.env.PORT || 8000;  
@@ -26,16 +27,27 @@ app.use(checkForAuthenticationCookie("token"))
 //public ke andar jo bhi h na usko static serve kr do
 app.use(express.static(path.resolve("./public")));
 //home route
-app.get('/',async (req,res)=>{
-    const allBlogs = await Blog.find({});
+app.get('/home',async (req,res)=>{
+    const userId = req.user._id;
+    // console.log(req.user._id)
+    const allBlogs = await Blog.find({createdBy: userId}).populate("createdBy")
+    // const allBlogs = await Blog.find({});
+    if(!allBlogs.length){
+        return res.redirect('/blog/add-new');
+    }
+    console.log(allBlogs)
     res.render("home",{
         user:req.user,
         blogs: allBlogs,
     });
 })
+app.get('/',async (req,res)=>{
+    res.render('signin')
+})
+
 //user routes for signin and signup
 app.use('/user',userRoute);
 //blog route for adding blogs
-app.use('/blog',blogRoute)
+app.use('/blog',blogRoute);
 
 app.listen(PORT, ()=> console.log(`Server Started at PORT: ${PORT}`));

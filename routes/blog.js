@@ -1,5 +1,6 @@
 const {Router} = require("express");
 const router = Router();
+require("dotenv").config();
 const multer = require("multer");
 const path = require("path")
 
@@ -8,7 +9,7 @@ const Comment = require("../models/comment");
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb){
-        cb(null, path.resolve(`./public/uploads/`));
+        cb(null, path.resolve(process.env.MONGO_URL));
     },
     filename: function (req, file, cb){
         const fileName = `${Date.now()}-${file.originalname}`;
@@ -53,13 +54,17 @@ router.post('/',upload.single('coverImage'),async (req,res)=>{
         body,
         title,
         createdBy: req.user._id,
-        coverImageURL: `/uploads/${req.file.filename}`,
+        image: { // Store GridFS file ID
+            fileId: req.file.id,
+            filename: req.file.filename,
+            contentType: req.file.mimetype
+          },
     })
     // console.log(blog)
     return res.redirect(`/home`)
 
     }catch(error){
-        console.error(`error in uploading is ${error}`)
+        console.log(`error in uploading is ${error}`)
     }
 })
 

@@ -62,7 +62,7 @@ router.post("/", upload.single("coverImage"), async (req, res) => {
             coverImageURL: cloudinaryUpload.secure_url,
         });
 
-        res.redirect("/home");
+        res.redirect(`/home`);
     } catch (error) {
         console.error("Error uploading blog:", error);
         res.status(500).send("Something went wrong.");

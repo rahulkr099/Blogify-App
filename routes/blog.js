@@ -8,7 +8,7 @@ const Blog = require("../models/blog")
 const Comment = require("../models/comment");
 
 cloudinary.config({
-    cloud_name:process.env.cloud_name,
+    cloud_name: process.env.cloud_name,
     api_key: process.env.api_key,
     api_secret: process.env.api_secret
 })
@@ -57,12 +57,16 @@ router.post('/',async (req,res)=>{
     // console.log('req file is',req.files)
     const file = req.files.coverImage;
     cloudinary.uploader.upload(file.tempFilePath,async(err,result)=>{
-        const blog = await Blog.create({
-            body,
-            title,
-            createdBy: req.user._id,
-            coverImageURL: result.secure_url,
-        })
+        try{
+            const blog = await Blog.create({
+                body,
+                title,
+                createdBy: req.user._id,
+                coverImageURL: result.secure_url,
+            })
+        }catch(err){
+            console.log('error is ',err);
+        }
     })
     // console.log(blog)
     return res.redirect(`/home`)

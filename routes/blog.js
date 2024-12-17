@@ -45,6 +45,8 @@ router.post('/comment/:blogId', async(req,res)=>{
 })
 
 router.post('/',upload.single('coverImage'),async (req,res)=>{
+    try{
+        
     const {title, body } = req.body;
    
     const blog = await Blog.create({
@@ -55,6 +57,10 @@ router.post('/',upload.single('coverImage'),async (req,res)=>{
     })
     // console.log(blog)
     return res.redirect(`/home`)
+
+    }catch(error){
+        console.error(`error in uploading is ${error}`)
+    }
 })
 
 

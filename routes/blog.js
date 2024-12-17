@@ -6,6 +6,7 @@ const path = require("path")
 const cloudinary = require('cloudinary').v2;
 const Blog = require("../models/blog")
 const Comment = require("../models/comment");
+const streamifier = require('streamifier')
 
 cloudinary.config({
     cloud_name: process.env.cloud_name,
@@ -13,10 +14,7 @@ cloudinary.config({
     api_secret: process.env.api_secret
 })
 
-var uploader = multer({
-    storage: multer.diskStorage({}),
-    limits: {fileSize:50000000}
-})
+const upload = multer();
 //add new blog route
 router.get('/add-new', (req,res)=>{
     return res.render("addBlog",{
@@ -44,25 +42,32 @@ router.post('/comment/:blogId', async(req,res)=>{
     return res.redirect(`/blog/${req.params.blogId}`)
 })
 
-router.post('/',uploader.single('coverImage'),async (req,res)=>{
-    const {title, body } = req.body;   
-    const file = req.files.coverImage;
-    console.log('req. files is ',req.files)
-    cloudinary.uploader.upload(file.tempFilePath,async(err,result)=>{
-        try{
-            const blog = await Blog.create({
-                body,
-                title,
-                createdBy: req.user._id,
-                coverImageURL: result.secure_url,
-            })
-        }catch(err){
-            console.log('error is ',err);
-        }
-    })
-    // console.log(blog)
-    return res.redirect(`/home`)
-})
+router.post("/", upload.single("coverImage"), async (req, res) => {
+    try {
+        const { title, body } = req.body;
+        const fileBuffer = req.file.buffer;
+
+        const cloudinaryUpload = await new Promise((resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream((err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            });
+            streamifier.createReadStream(fileBuffer).pipe(uploadStream);
+        });
+
+        const blog = await Blog.create({
+            title,
+            body,
+            createdBy: req.user._id,
+            coverImageURL: cloudinaryUpload.secure_url,
+        });
+
+        res.redirect("/home");
+    } catch (error) {
+        console.error("Error uploading blog:", error);
+        res.status(500).send("Something went wrong.");
+    }
+});
 
 
 module.exports = router;

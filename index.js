@@ -8,7 +8,7 @@ const { checkForAuthenticationCookie } = require("./middleware/authentication");
 const blogRoute = require("./routes/blog");
 const Blog = require('./models/blog')
 const auth = require('./utils/authentication')
-
+const fileUpload = require('express-fileupload')
 const app = express();
 const PORT = process.env.PORT || 8000;  
 
@@ -25,6 +25,10 @@ app.use(cookieParser());
 app.use(checkForAuthenticationCookie("token"))
 //public ke andar jo bhi h na usko static serve kr do
 app.use(express.static(path.resolve("./public")));
+//fileupload
+app.use(fileUpload({
+    useTempFiles:true
+}))
 //home route
 app.get('/home',async (req,res)=>{
     const userId = req.user._id;
@@ -62,5 +66,6 @@ app.get('/',async (req,res)=>{
 app.use('/user',userRoute);
 //blog route for adding blogs
 app.use('/blog',blogRoute);
+
 
 app.listen(PORT, ()=> console.log(`Server Started at PORT: ${PORT}`));

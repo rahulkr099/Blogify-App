@@ -54,7 +54,7 @@ router.post('/',upload.single('coverImage'),async (req,res)=>{
         body,
         title,
         createdBy: req.user._id,
-        image: { // Store GridFS file ID
+        coverImageURL: { // Store GridFS file ID
             fileId: req.file.id,
             filename: req.file.filename,
             contentType: req.file.mimetype

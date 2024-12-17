@@ -4,10 +4,11 @@
     <%- include('./partials/head') %>
     <title>SignIn</title>
 </head>
-<body>
+<body data-bs-theme="dark" class="text-white">
     <%- include('./partials/nav') %>
 
     <div class="container mt-4">
+      <h1 class="m-4 text-primary text-center"> Blogify : A Blog App</h1>
         <form action="/user/signin" method="post">
             <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label">Email address</label>

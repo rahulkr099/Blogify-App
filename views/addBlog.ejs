@@ -4,7 +4,7 @@
     <%- include('./partials/head') %>
     <title>Add New Blog</title>
 </head>
-<body>
+<body data-bs-theme="dark">
     <%- include('./partials/nav') %> 
     <div class="container mt-3">
         <form action="/blog" method="post" enctype="multipart/form-data">
@@ -32,7 +32,7 @@
             <div class="mb-3">
             <label for="floatingTextarea">Body</label>  
             <textarea class="form-control"
-            id="floatingTextarea" name="body"></textarea> 
+            id="floatingTextarea" name="body" rows="15"></textarea> 
             </div>
             <div class="mb-3">
                 <button class="btn btn-primary">Submit</button>

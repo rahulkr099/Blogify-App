@@ -1,6 +1,6 @@
 const JWT = require("jsonwebtoken")
+require("dotenv").config();
 
-const secret = "$uperMan@123";
 
 function createTokenForUser(user){
     const payload = {
@@ -11,59 +11,15 @@ function createTokenForUser(user){
         role: user.role,
     }
 
-    const token = JWT.sign(payload,secret);
+    const token = JWT.sign(payload,process.env.JWT_SECRET);
     return token;
 }
 function validateToken(token){
-    const payload = JWT.verify(token,secret);
+    const payload = JWT.verify(token,process.env.JWT_SECRET);
     return payload;
 }
-const jwt = require("jsonwebtoken")
-require("dotenv").config();
 
 
-exports.auth = (req, res, next) => {
-    try {
-
-        // console.log("Body", req.body.token);
-        // console.log("Cookies", req.cookies.token);
-        // console.log("Header", req.header("Authorization").replace("Bearer", " "));
-
-        // const token = req.body.token;
-        // const token = req.cookie.token 
-        const token = req.body.token || req.cookies.token || req.header("Authorization").replace("Bearer ", "");
-
-        if(!token || token === undefined) {
-            return res.status(401).json({
-                success:false,
-                message:'Token Missing',
-            });
-        }
-        // verify the token 
-        try {
-            const decode = jwt.verify(token, process.env.JWT_SECRET);
-
-            console.log(decode)
-
-            req.user = decode;
-        }
-        catch (e) {
-            return res.status(401).json({
-                success: false,
-                message: "token is invalid"
-            })
-        }
-
-        next();
-    }
-    catch (err) {
-        console.log(err)
-        return res.status(401).json({
-            success: false,
-            message: "Something went wrong while verifying token"
-        })
-    }
-}
 module.exports = {
     createTokenForUser,
     validateToken,

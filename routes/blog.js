@@ -40,6 +40,7 @@ router.post('/comment/:blogId', async(req,res)=>{
         blogId:req.params.blogId,
         createdBy:req.user._id,
     })
+    // console.log('coomment',comment)
     return res.redirect(`/blog/${req.params.blogId}`)
 })
 
@@ -52,7 +53,7 @@ router.post('/',upload.single('coverImage'),async (req,res)=>{
         createdBy: req.user._id,
         coverImageURL: `/uploads/${req.file.filename}`,
     })
-    console.log(blog)
+    // console.log(blog)
     return res.redirect(`/home`)
 })
 

@@ -12,8 +12,7 @@ const auth = require('./utils/authentication')
 const app = express();
 const PORT = process.env.PORT || 8000;  
 
-mongoose.connect(process.env.MONGO_URL)
-                .then(console.log('Mongodb Connected'));
+mongoose.connect(process.env.MONGO_URL).then(console.log('Mongodb Connected'));
 //setting ejs engine
 app.set("view engine", "ejs");
 //resolving path to get ejs files as frontend
@@ -36,6 +35,20 @@ app.get('/home',async (req,res)=>{
         return res.redirect('/blog/add-new');
     }
     console.log(allBlogs)
+    res.render("home",{
+        user:req.user,
+        blogs: allBlogs,
+    });
+})
+app.get('/all-blogs',async (req,res)=>{
+    const userId = req.user._id;
+    // console.log(req.user._id)
+    const allBlogs = await Blog.find({}).populate("createdBy")
+    // const allBlogs = await Blog.find({});
+    if(!allBlogs.length){
+        return res.redirect('/blog/add-new');
+    }
+    // console.log(allBlogs)
     res.render("home",{
         user:req.user,
         blogs: allBlogs,

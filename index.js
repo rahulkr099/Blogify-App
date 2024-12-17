@@ -26,9 +26,10 @@ app.use(checkForAuthenticationCookie("token"))
 //public ke andar jo bhi h na usko static serve kr do
 app.use(express.static(path.resolve("./public")));
 //fileupload
-// app.use(fileUpload({
-//     useTempFiles:true
-// }))
+app.use(fileUpload({
+    createParentPath:true,
+    tempFileDir:'/tmp/uploads'
+}))
 //home route
 app.get('/home',async (req,res)=>{
     const userId = req.user._id;

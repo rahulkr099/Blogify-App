@@ -13,17 +13,10 @@ cloudinary.config({
     api_secret: process.env.api_secret
 })
 
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb){
-//         cb(null, path.resolve('./public/uploads'));
-//     },
-//     filename: function (req, file, cb){
-//         const fileName = `${Date.now()}-${file.originalname}`;
-//         cb(null,fileName);
-//     },
-// });
-
-// const upload = multer({storage: storage})
+var uploader = multer({
+    storage: multer.diskStorage({}),
+    limits: {fileSize:500000}
+})
 //add new blog route
 router.get('/add-new', (req,res)=>{
     return res.render("addBlog",{
@@ -51,11 +44,10 @@ router.post('/comment/:blogId', async(req,res)=>{
     return res.redirect(`/blog/${req.params.blogId}`)
 })
 
-router.post('/',async (req,res)=>{
-    const {title, body } = req.body;
-    // console.log('req is',req)
-    // console.log('req file is',req.files)
+router.post('/',uploader.single('coverImage'),async (req,res)=>{
+    const {title, body } = req.body;   
     const file = req.files.coverImage;
+    console.log('req. files is ',req.files)
     cloudinary.uploader.upload(file.tempFilePath,async(err,result)=>{
         try{
             const blog = await Blog.create({

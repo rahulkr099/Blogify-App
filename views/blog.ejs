@@ -12,10 +12,12 @@
       <div class="d-flex m-2">
         <img class="rounded-circle border border-white" src="<%= blog.createdBy.profileImageURL %>" width="40px"/>
         <h4 class="m-2 p-2">Created By: <%= blog.createdBy.fullName %> </h4>
-      </div class="card-body">
-      <pre class=" mb-2 mt-5 border border-primary rounded shadow p-4"><%= blog.body %></pre>
-    </div>
-    <div class="container mt-3">
+      </div>
+      <div style="box-shadow: 3px 5px 18px inset rgb(83, 197, 235);" class="rounded">
+        <pre class="d-block w-100 mb-2 mt-5 border border-primary rounded shadow p-4" 
+        style="white-space: pre-wrap; word-wrap: break-word;font-size: 20px; background-color: rgba(0,0,0, 0.3);"><%= blog.body %></pre>
+      </div></div>
+      <div class="container mt-5">
     <!-- comments variable backend se pass hua h, routes me jaakar dekho -->
       <h1 class="text-primary">Comments (<%= comments.length %>)</h1>
 <!-- locals ke andar saare variable store rhte h, to tum  -->
@@ -34,12 +36,13 @@
           </form>
       <% } %>
     </div>
-    <div class="container">
+    <div class="container mt-3" style="font-size: 19px;">
 <!-- hum comments ko backend se frontend me pass kr rhe h, isliye locals nhi use kiye -->
         <% comments.forEach(comment => { %>
            <img src="<%= comment.createdBy.profileImageURL %>" width="30px" class="rounded-circle m-1 border border-danger"/> 
              <%=comment.createdBy.fullName %>:
-      <pre class="border p-2 rounded w-50"><%= comment.content %></pre>
+             <pre class="d-block border p-2 rounded w-50" 
+             style="white-space: pre-wrap; word-wrap: break-word;"><%= comment.content %></pre>
         <% }) %>
     </div>
     <%- include('./partials/script') %>

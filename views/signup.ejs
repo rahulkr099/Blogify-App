@@ -4,14 +4,15 @@
     <%- include('./partials/head') %>
     <title>Signup</title>
 </head>
-<body data-bs-theme="dark" class="text-white">
+<body class="bg-image" 
+style="background-image: url('/7639.jpg'); background-size: cover; background-position: center;">
     <%- include('./partials/nav') %>
 
-    <div class="container mt-4">
-      <h1 class="m-4 text-primary text-start"> Blogify : A Blog App</h1>
-        <form action="/user/signup" method="post">
+    <div class="container mt-4 w-25 responsive-div">
+      <h1 class="mb-2 p-1 text-primary text-start custom-blur rounded"> Blogify : A Blog App</h1>
+        <form action="/user/signup" method="post" class="custom-blur p-3 rounded">
             <div class="mb-3" style="font-size: 20px;">
-                <label for="fullName" class="form-label">Full Name</label>
+                <label for="fullName" class="form-label custom-input">Full Name</label>
                 <input 
                 type="text" 
                 class="form-control" 
@@ -21,7 +22,7 @@
                 placeholder="Enter Your Full Name">
               </div>
             <div class="mb-3" style="font-size: 20px;">
-              <label for="exampleInputEmail1" class="form-label">Email address</label>
+              <label for="exampleInputEmail1" class="form-label custom-input">Email address</label>
               <input 
               type="email" 
               class="form-control" 
@@ -29,10 +30,8 @@
               name="email" 
               ria-describedby="emailHelp"
               placeholder="Enter Your Email">
-              <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-            </div>
-            <div class="mb-3 w-50" style="font-size: 20px;">
-              <label for="exampleInputPassword1" class="form-label">Password</label>
+            <div class="mb-3" style="font-size: 20px;">
+              <label for="exampleInputPassword1" class="form-label custom-input">Password</label>
               <input 
               type="password" 
               class="form-control" 
@@ -40,8 +39,9 @@
               id="exampleInputPassword1"
               placeholder="Enter Your Password">
             </div>
-            
+            <div class="d-flex justify-content-center mt-auto">
             <button type="submit" class="btn btn-primary" style="font-size: 20px;">Submit</button>
+            </div>
           </form>
     </div>
 

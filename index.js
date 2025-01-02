@@ -12,7 +12,7 @@ const fileUpload = require('express-fileupload')
 const app = express();
 const PORT = process.env.PORT || 8000;  
 
-mongoose.connect(process.env.MONGO_URL).then(() => console.log("Mongodb connected"));
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => console.log("Mongodb connected"));
 //setting ejs engine
 app.set("view engine", "ejs");
 //resolving path to get ejs files as frontend

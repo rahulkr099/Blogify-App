@@ -31,6 +31,21 @@ router.get('/:id',async (req,res)=>{
         blog,comments,
     });
 })
+//delete route
+router.delete('/delete/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await Blog.findByIdAndDelete(id); // Correct usage
+        res.status(200).json({ success: true, message: "Blog deleted successfully." });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            error: err.message,
+            message: "Server error",
+        });
+    }
+});
+
 //comment route
 router.post('/comment/:blogId', async(req,res)=>{
     const comment = await Comment.create({
